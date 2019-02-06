@@ -1,15 +1,20 @@
 buildscript {
-	ext {
-		kotlinVersion = '1.2.30'
-		springBootVersion = '2.0.0.RELEASE'
-	}
+	ext.kotlin_version = "1.2.70"
+	ext.kotlin_coroutines_version = "0.26.0"
+	ext.spring_version = "5.0.9.RELEASE"
+	ext.spring_boot_version = "2.0.5.RELEASE"
+
 	repositories {
 		mavenCentral()
+		maven {
+			url "https://repo.spring.io/milestone"
+		}
 	}
+
 	dependencies {
-		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-		classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
-		classpath("org.jetbrains.kotlin:kotlin-allopen:${kotlinVersion}")
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${spring_boot_version}")
+		classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlin_version}")
+		classpath("org.jetbrains.kotlin:kotlin-allopen:${kotlin_version}")
 	}
 }
 
@@ -22,12 +27,14 @@ apply plugin: 'io.spring.dependency-management'
 group = 'cz.zubal'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
+
 compileKotlin {
 	kotlinOptions {
 		freeCompilerArgs = ["-Xjsr305=strict"]
 		jvmTarget = "1.8"
 	}
 }
+
 compileTestKotlin {
 	kotlinOptions {
 		freeCompilerArgs = ["-Xjsr305=strict"]
@@ -37,6 +44,7 @@ compileTestKotlin {
 
 repositories {
 	mavenCentral()
+	maven { url 'https://dl.bintray.com/konrad-kaminski/maven' }
 }
 
 
@@ -47,6 +55,12 @@ dependencies {
 	compile("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	compile("org.jetbrains.kotlin:kotlin-reflect")
 	compile('io.codearte.jfairy:jfairy:0.5.9')
+	implementation 'org.springframework.kotlin:spring-kotlin-coroutine:0.3.6'
+	implementation 'org.springframework.kotlin:spring-webflux-kotlin-coroutine:0.3.6'
+	compile "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlin_coroutines_version"
+	compile "org.jetbrains.kotlinx:kotlinx-coroutines-reactor:$kotlin_coroutines_version"
+	compile "org.jetbrains.kotlinx:kotlinx-coroutines-rx1:$kotlin_coroutines_version"
+	compile "org.jetbrains.kotlinx:kotlinx-coroutines-rx2:$kotlin_coroutines_version"
   testCompile('org.springframework.boot:spring-boot-starter-test')
 	testCompile('io.projectreactor:reactor-test')
 }
